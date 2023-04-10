@@ -1,0 +1,10 @@
+.app__wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content-wrapper {
+    padding-top: 87px;
+}

@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+<h1>Twotter</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p>Посмотреть можно <a href="">тут</a></p>
 
-## Available Scripts
+<p>Twotter - сайт для общения и обмена информации.</p>
+<p>Наверху сайта есть меню, с помощью которого можно перейти на главную страницу или на страницу регистрации если вы не авторизованы и на главную страницу или на страницу профиля если авторизованы. Также сверху расположена кнопка Logout для выхода из аккаунта если вы авторизованы.</p>
+<p>На сайте есть 4 основных страницы:</p>
 
-In the project directory, you can run:
+### `Страница регистрации`
 
-### `npm start`
+<p>На странице расположена форма с помощью которой вы можете зарегестрироваться и/или залогиниться.</p>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `Главная страница`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<p>На главной странице расположены все твиты, на которые можно реагировать лайком, дизлайком и комментарием если вы авторизованы.</p>
+<p>На главной странице можно выкладывать твиты если вы авторизованы.</p>
+<p>Также с главной страницы можно перейти на отдельную страницу каждого твита.</p>
 
-### `npm test`
+### `Страница твита`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<p>На странице расположен твит на который вы нажали на главной странице, здесь вы также можете реагировать на твит если вы авторизованы.</p>
+<p>На странице можно написать комментарий к твиту, а также отреагировать на комментарий лайком или дизлайком если вы авторизованы.</p>
+
+### `Страница профиля`
+
+<p>На странице расположены две формы.</p>
+<p>Первая форма - для изменения имени пользователя, а также просмотра текущего имени пользователя.</p>
+<p>Вторая форма - для изменения пароля.</p>
+
+<hr>
+
+## `Server side`
+
+### `npm run start`
+
+Запускает приложение в режиме разработки на [http://localhost:3000](http://localhost:3000)
+
+### `npm install`
+
+Устанавливает все зависимости в папку node_modules
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Собирает файлы для заливки в папку build
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<hr>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## `Client side`
 
-### `npm run eject`
+### `npm start`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Запускает приложение в режиме разработки на [http://localhost:3000](http://localhost:3000)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `npm install`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Устанавливает все зависимости в папку node_modules
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### `npm run build`
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Собирает файлы для заливки в папку build

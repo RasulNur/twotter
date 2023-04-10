@@ -1,0 +1,8 @@
+.home {
+    margin: 50px 0 50px;
+}
+
+.home__posts-wrapper {
+    display: grid;
+    gap: 30px;
+}

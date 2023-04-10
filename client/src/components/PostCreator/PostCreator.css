@@ -1,0 +1,26 @@
+.postcreator__form {
+    margin-top: 50px;
+}
+
+.postcreator__label {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.postcreator__btn {
+    color: #ffffff;
+    background-color: #1d9bf0;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 28px;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+}
+
+@media (min-width: 768px) {
+    .postcreator__btn {
+        background-color: #1a8cd8;
+    }
+}
