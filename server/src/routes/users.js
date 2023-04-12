@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { UserModel } from "../models/Users.js";
 
 const router = express.Router();
-const tokenSecret = "gdfgd45gdfg";
+const tokenSecret = process.env.TOKEN_SECRET;
 
 router.get("/users/:userID", async (req, res) => {
     try {

@@ -1,5 +1,5 @@
 import express from "express";
-import mongoose from "mongoose";
+
 import { TweetModel } from "../models/Tweets.js";
 
 const router = express.Router();
