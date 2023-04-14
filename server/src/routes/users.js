@@ -1,3 +1,5 @@
+import * as dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -20,7 +22,7 @@ router.post("/register", async (req, res) => {
     const { username, password } = req.body;
 
     const user = await UserModel.findOne({
-        username: username,
+        username,
     });
 
     if (user) {
@@ -35,7 +37,8 @@ router.post("/register", async (req, res) => {
     });
     await newUser.save();
 
-    res.json({ message: "User registered!" });
+    const token = jwt.sign({ id: newUser._id }, tokenSecret);
+    res.json({ token, userID: newUser._id });
 });
 
 router.post("/login", async (req, res) => {
