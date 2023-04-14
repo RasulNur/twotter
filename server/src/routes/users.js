@@ -75,7 +75,7 @@ router.put("/changeusername/:id", async (req, res) => {
 });
 
 router.post("/changepassword/:id", async (req, res) => {
-    const { currPassword } = req.body;
+    const { currPassword, newPassword } = req.body;
     try {
         const currUser = await UserModel.findById(req.params.id);
 
@@ -87,22 +87,14 @@ router.post("/changepassword/:id", async (req, res) => {
         if (!isPasswordValid) {
             return res.json({ message: "Password is incorrect!" });
         }
-        return res.json({ isPasswordValid });
-    } catch (error) {
-        res.json(e);
-    }
-});
 
-router.put("/changepassword/:id", async (req, res) => {
-    const { newPassword } = req.body;
-    try {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         const user = await UserModel.findByIdAndUpdate(req.params.id, {
             password: hashedPassword,
         });
 
         res.json({ user, hashedPassword });
-    } catch (e) {
+    } catch (error) {
         res.json(e);
     }
 });

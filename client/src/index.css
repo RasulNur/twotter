@@ -97,7 +97,6 @@ video {
 button {
     font-family: "Ubuntu", sans-serif;
     font-size: 16px;
-    outline: none;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -139,10 +138,18 @@ table {
 a {
     text-decoration: none;
     color: inherit;
+    display: inline-block;
+}
+
+.header-container {
+    max-width: 1370px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: content-box;
 }
 
 .container {
-    max-width: 1370px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 0 15px;
     box-sizing: content-box;

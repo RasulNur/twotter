@@ -6,3 +6,11 @@
     display: grid;
     gap: 30px;
 }
+
+.home__write-post {
+    border: 1px solid #e1e5e7;
+    background-color: #f7f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 50px;
+}

@@ -1,4 +1,4 @@
-import "./PostCreator.css";
+import "./TweetCreator.css";
 import { useState } from "react";
 import axios from "axios";
 import { useGetUserId } from "../../hooks/useGetUserId";
@@ -8,6 +8,7 @@ import { fetchTweetsThunk } from "../../store/tweets/tweetsThunk";
 export default function PostCreator() {
     const userID = useGetUserId();
     const dispatch = useDispatch();
+    const [lettersCount, setLettersCount] = useState(0);
     const [tweet, setTweet] = useState({
         text: "",
         userOwner: userID,
@@ -16,6 +17,7 @@ export default function PostCreator() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setTweet({ ...tweet, [name]: value });
+        setLettersCount(value.length);
     };
 
     const onSubmit = async (e) => {
@@ -27,7 +29,7 @@ export default function PostCreator() {
                 setTweet({ ...tweet, text: "" });
                 return;
             }
-            await axios.post("http://localhost:3001/tweets", tweet);
+            await axios.post("tweets", tweet);
 
             dispatch(fetchTweetsThunk());
             setTweet({ ...tweet, text: "" });
@@ -45,11 +47,14 @@ export default function PostCreator() {
                     type="text"
                     value={tweet.text}
                     onChange={handleChange}
-                    className="postcreator__input"
+                    maxLength="250"
+                    rows={4}
+                    className="postcreator__textarea"
                 />
+                <span className="postcreator__span">{lettersCount}/250</span>
             </label>
 
-            <button className="postcreator__btn" type="sumbit">
+            <button className="postcreator__btn" type="submit">
                 Post
             </button>
         </form>

@@ -4,20 +4,31 @@ import HeaderLink from "./HeaderLink";
 
 import { useCookies } from "react-cookie";
 import { useGetUserId } from "../../hooks/useGetUserId";
+import { useEffect } from "react";
+import DropdownMenu from "../DropdownMenu/DropdownMenu";
 
-function Header() {
+function Header({ currUsername, fetchCurrentUser }) {
     const [_, setCookies] = useCookies(["access_token"]);
     const userID = useGetUserId();
     const navigate = useNavigate();
 
-    const logout = () => {
-        setCookies("access_token", "");
-        window.localStorage.removeItem("userID");
-        navigate("/register");
+    const handleSelectChange = (e) => {
+        console.log(e.target.value);
+        if (e.target.value === "logout") {
+            setCookies("access_token", "");
+            window.localStorage.removeItem("userID");
+        } else if (e.target.value === "edit") {
+            navigate("/profile");
+        }
     };
+
+    useEffect(() => {
+        fetchCurrentUser();
+    }, [userID]);
+
     return (
         <header className="header">
-            <div className="container">
+            <div className="header-container">
                 <nav className="header__nav">
                     <Link to="/" className="header__icon">
                         Twotter
@@ -25,25 +36,35 @@ function Header() {
                     <ul className="header__list">
                         {!userID ? (
                             <li className="header__list-item">
-                                <HeaderLink
-                                    url={"register"}
-                                    text={"Register"}
-                                />
+                                <HeaderLink url={"login"} text={"Login"} />
                             </li>
                         ) : (
                             <>
                                 <li className="header__list-item">
-                                    <HeaderLink
-                                        url={"profile"}
-                                        text={"Profile"}
-                                    />
-                                </li>
-                                <li className="header__list-item">
-                                    <button
-                                        className="header__btn"
-                                        onClick={logout}>
-                                        Logout
-                                    </button>
+                                    <select
+                                        className="header__select"
+                                        name="cars"
+                                        id="cars"
+                                        onChange={handleSelectChange}
+                                        defaultValue="username">
+                                        <option
+                                            className="header__option"
+                                            value="username"
+                                            hidden>
+                                            {currUsername}
+                                        </option>
+                                        <option
+                                            value="edit"
+                                            className="header__option">
+                                            Edit profile
+                                        </option>
+                                        <option
+                                            value="logout"
+                                            className="header__option">
+                                            Logout
+                                        </option>
+                                    </select>
+                                    <DropdownMenu />
                                 </li>
                             </>
                         )}

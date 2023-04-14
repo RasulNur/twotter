@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Profile.css";
 import { useGetUserId } from "../../hooks/useGetUserId";
 import axios from "axios";
 
-export default function Profile() {
+export default function Profile({ currUsername, fetchCurrentUser }) {
     const userID = useGetUserId();
-    const [currUsername, setCurrUsername] = useState("");
+
     const [newUser, setNewUser] = useState({
         newUsername: "",
         currPassword: "",
@@ -24,11 +24,11 @@ export default function Profile() {
         const { newUsername } = newUser;
 
         try {
-            await axios.put(`http://localhost:3001/auth/changeusername/${id}`, {
+            await axios.put(`auth/changeusername/${id}`, {
                 username: newUsername,
             });
             setNewUser({ ...newUser, newUsername: "" });
-            fetchProfileUser();
+            fetchCurrentUser();
         } catch (e) {
             console.error(e);
         }
@@ -46,21 +46,8 @@ export default function Profile() {
         }
 
         try {
-            const isPasswordValid = await axios.post(
-                `http://localhost:3001/auth/changepassword/${id}`,
-                { currPassword }
-            );
-            if (!isPasswordValid.data.isPasswordValid) {
-                setNewUser({
-                    ...newUser,
-                    currPassword: "",
-                    newPassword: "",
-                    confirmPassword: "",
-                });
-                alert("Current password is not right");
-                return;
-            }
-            await axios.put(`http://localhost:3001/auth/changepassword/${id}`, {
+            const res = await axios.post(`auth/changepassword/${id}`, {
+                currPassword,
                 newPassword,
             });
 
@@ -70,21 +57,12 @@ export default function Profile() {
                 newPassword: "",
                 confirmPassword: "",
             });
+
+            console.log(res);
         } catch (e) {
             console.error(e);
         }
     };
-
-    const fetchProfileUser = async () => {
-        const currUser = await axios.get(
-            `http://localhost:3001/auth/users/${userID}`
-        );
-
-        setCurrUsername(currUser.data.username);
-    };
-    useEffect(() => {
-        fetchProfileUser();
-    }, []);
 
     return (
         <section className="profile">

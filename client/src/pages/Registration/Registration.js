@@ -14,13 +14,10 @@ export default function Registration() {
         e.preventDefault();
 
         try {
-            const res = await axios.post(
-                "http://localhost:3001/auth/register",
-                {
-                    username,
-                    password,
-                }
-            );
+            const res = await axios.post("auth/register", {
+                username,
+                password,
+            });
             alert("Registration completed successfully!");
             setUsername("");
             setPassword("");

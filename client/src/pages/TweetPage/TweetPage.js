@@ -15,12 +15,13 @@ export default function Post() {
     const { id, username } = useParams();
     const tweetID = id;
     const [tweet, setTweet] = useState();
+    const comments = tweet?.comments;
+    // console.log(tweet?.comments);
+    console.log(comments);
 
     const fetchTweet = async () => {
         try {
-            const res = await axios.get(
-                `http://localhost:3001/tweets/${tweetID}`
-            );
+            const res = await axios.get(`tweets/${tweetID}`);
 
             setTweet(res.data);
         } catch (e) {
@@ -36,12 +37,9 @@ export default function Post() {
             alert("You should register or login to react");
             return;
         }
-        await axios.put(
-            `http://localhost:3001/tweets/reactions/likes/${tweetID}`,
-            {
-                userID,
-            }
-        );
+        await axios.put(`tweets/reactions/likes/${tweetID}`, {
+            userID,
+        });
         fetchTweet();
     };
     const onDislikeClick = async () => {
@@ -49,10 +47,7 @@ export default function Post() {
             alert("You should register or login to react");
             return;
         }
-        await axios.put(
-            `http://localhost:3001/tweets/reactions/dislikes/${tweetID}`,
-            { userID }
-        );
+        await axios.put(`tweets/reactions/dislikes/${tweetID}`, { userID });
         fetchTweet();
     };
 
@@ -101,22 +96,29 @@ export default function Post() {
 
                 <div className="post__comments">
                     <h2 className="post__comments-heading">Comments</h2>
+                    {userID ? (
+                        <div className="post__comments-creator">
+                            <CommentsCreator
+                                tweetID={tweetID}
+                                fetchTweet={fetchTweet}
+                            />
+                        </div>
+                    ) : null}
 
                     <div className="post__comments-wrapper">
-                        {tweet && tweet.comments.length > 0 ? (
-                            tweet &&
-                            tweet.comments.map((comment) => (
-                                <Comment key={comment} commentID={comment} />
-                            ))
+                        {comments && comments.length > 0 ? (
+                            comments &&
+                            [...comments]
+                                .reverse()
+                                .map((comment) => (
+                                    <Comment
+                                        key={comment}
+                                        commentID={comment}
+                                    />
+                                ))
                         ) : (
                             <h3>No comments</h3>
                         )}
-                    </div>
-                    <div className="post__comments-creator">
-                        <CommentsCreator
-                            tweetID={tweetID}
-                            fetchTweet={fetchTweet}
-                        />
                     </div>
                 </div>
             </div>

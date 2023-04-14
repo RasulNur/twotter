@@ -12,6 +12,11 @@
     margin-bottom: 5px;
 }
 
+.home__post-text-link {
+    overflow-wrap: anywhere;
+    line-height: 150%;
+}
+
 .home__post-bottom {
     display: flex;
     justify-content: space-between;

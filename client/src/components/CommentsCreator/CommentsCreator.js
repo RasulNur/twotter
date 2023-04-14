@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function CommentsCreator({ tweetID, fetchTweet }) {
     const userID = useGetUserId();
+    const [lettersCount, setLettersCount] = useState(0);
     const [comment, setComment] = useState({
         text: "",
         userOwner: userID,
@@ -14,6 +15,7 @@ export default function CommentsCreator({ tweetID, fetchTweet }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setComment({ ...comment, [name]: value });
+        setLettersCount(value.length);
     };
 
     const onSubmit = async (e) => {
@@ -25,13 +27,10 @@ export default function CommentsCreator({ tweetID, fetchTweet }) {
                 setComment({ ...comment, text: "" });
                 return;
             }
-            const commentRes = await axios.post(
-                "http://localhost:3001/comments",
-                comment
-            );
+            const commentRes = await axios.post("comments", comment);
             const tweetID = comment.tweetID;
             const commentID = commentRes.data._id;
-            await axios.put("http://localhost:3001/comments", {
+            await axios.put("comments", {
                 tweetID,
                 commentID,
             });
@@ -51,8 +50,13 @@ export default function CommentsCreator({ tweetID, fetchTweet }) {
                     value={comment.text}
                     onChange={handleChange}
                     type="text"
-                    className="commentscreator__input"
+                    rows={4}
+                    maxLength="250"
+                    className="commentscreator__textarea"
                 />
+                <span className="commentscreator__span">
+                    {lettersCount}/250
+                </span>
             </label>
 
             <button className="commentscreator__btn" type="submit">

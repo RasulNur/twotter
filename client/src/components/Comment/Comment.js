@@ -14,11 +14,9 @@ export default function Comment({ commentID }) {
         username: "",
     });
     const fetchComment = async () => {
-        const resComment = await axios.get(
-            `http://localhost:3001/comments/${commentID}`
-        );
+        const resComment = await axios.get(`comments/${commentID}`);
         const resUser = await axios.get(
-            `http://localhost:3001/auth/users/${resComment.data.userOwner}`
+            `auth/users/${resComment.data.userOwner}`
         );
 
         setCurrentComment({
@@ -35,10 +33,7 @@ export default function Comment({ commentID }) {
             alert("You should register or login to react");
             return;
         }
-        await axios.put(
-            `http://localhost:3001/comments/reactions/likes/${commentID}`,
-            { userID }
-        );
+        await axios.put(`comments/reactions/likes/${commentID}`, { userID });
         fetchComment();
     };
     const onDislikeClick = async () => {
@@ -46,10 +41,7 @@ export default function Comment({ commentID }) {
             alert("You should register or login to react");
             return;
         }
-        await axios.put(
-            `http://localhost:3001/comments/reactions/dislikes/${commentID}`,
-            { userID }
-        );
+        await axios.put(`comments/reactions/dislikes/${commentID}`, { userID });
         fetchComment();
     };
 
