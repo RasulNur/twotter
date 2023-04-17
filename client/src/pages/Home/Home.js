@@ -1,7 +1,7 @@
 import HomeTweet from "../../components/HomeTweet/HomeTweet";
 import TweetCreator from "../../components/TweetCreator/TweetCreator";
 import "./Home.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchTweetsThunk } from "../../store/tweets/tweetsThunk";
@@ -12,33 +12,47 @@ export default function Home() {
     const dispatch = useDispatch();
     const tweetsSlice = useSelector((state) => state.tweets);
     const { tweets } = tweetsSlice;
-    console.log(tweets);
+    const [limit, setLimit] = useState(10);
+
+    const detectScrollBottom = () => {
+        window.onscroll = function () {
+            if (
+                window.innerHeight + Math.ceil(window.pageYOffset) >=
+                document.body.offsetHeight
+            ) {
+                setLimit(limit + 10);
+                dispatch(fetchTweetsThunk(limit));
+            }
+        };
+    };
+
     useEffect(() => {
-        dispatch(fetchTweetsThunk());
-    }, []);
+        dispatch(fetchTweetsThunk(limit));
+        detectScrollBottom();
+    }, [window.pageYOffset]);
+    detectScrollBottom();
 
     return (
         <div className="home">
             <div className="container">
                 {userID ? (
                     <div className="home__write-post">
-                        <TweetCreator />
+                        <TweetCreator limit={limit} />
                     </div>
                 ) : null}
 
                 <div className="home__posts-wrapper">
                     {tweets.length > 0 ? (
-                        [...tweets]
-                            .reverse()
-                            .map((tweet) => (
-                                <HomeTweet
-                                    key={tweet._id}
-                                    tweet={tweet}
-                                    tweetID={tweet._id}
-                                    tweetText={tweet.text}
-                                    tweetUserID={tweet.userOwner}
-                                />
-                            ))
+                        [...tweets].map((tweet) => (
+                            <HomeTweet
+                                key={tweet._id}
+                                tweet={tweet}
+                                tweetID={tweet._id}
+                                tweetText={tweet.text}
+                                tweetUserID={tweet.userOwner}
+                                limit={limit}
+                            />
+                        ))
                     ) : (
                         <h2>No posts</h2>
                     )}

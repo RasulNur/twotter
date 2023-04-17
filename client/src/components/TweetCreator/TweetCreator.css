@@ -29,7 +29,7 @@
 }
 
 @media (min-width: 768px) {
-    .postcreator__btn {
+    .postcreator__btn:hover {
         background-color: #1a8cd8;
     }
 }

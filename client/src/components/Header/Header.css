@@ -25,8 +25,7 @@
     gap: 20px;
 }
 
-.header__link,
-.header__select {
+.header__link {
     color: #ffffff;
     background-color: #1d9bf0;
     box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 28px;
@@ -39,9 +38,4 @@
     .header__link:hover {
         background-color: #1a8cd8;
     }
-}
-
-.header__select * {
-    background-color: white;
-    color: #1d9bf0;
 }

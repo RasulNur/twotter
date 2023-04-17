@@ -5,7 +5,7 @@ import { useGetUserId } from "../../hooks/useGetUserId";
 import { useDispatch } from "react-redux";
 import { fetchTweetsThunk } from "../../store/tweets/tweetsThunk";
 
-export default function PostCreator() {
+export default function TweetCreator({ limit }) {
     const userID = useGetUserId();
     const dispatch = useDispatch();
     const [lettersCount, setLettersCount] = useState(0);
@@ -24,14 +24,9 @@ export default function PostCreator() {
         e.preventDefault();
 
         try {
-            if (!userID) {
-                alert("You should register or login to write post");
-                setTweet({ ...tweet, text: "" });
-                return;
-            }
             await axios.post("tweets", tweet);
 
-            dispatch(fetchTweetsThunk());
+            dispatch(fetchTweetsThunk(limit));
             setTweet({ ...tweet, text: "" });
         } catch (e) {
             console.error(e);
@@ -49,6 +44,7 @@ export default function PostCreator() {
                     onChange={handleChange}
                     maxLength="250"
                     rows={4}
+                    required
                     className="postcreator__textarea"
                 />
                 <span className="postcreator__span">{lettersCount}/250</span>

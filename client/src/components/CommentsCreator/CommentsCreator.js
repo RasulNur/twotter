@@ -22,11 +22,6 @@ export default function CommentsCreator({ tweetID, fetchTweet }) {
         e.preventDefault();
 
         try {
-            if (!userID) {
-                alert("You should register or login to write post");
-                setComment({ ...comment, text: "" });
-                return;
-            }
             const commentRes = await axios.post("comments", comment);
             const tweetID = comment.tweetID;
             const commentID = commentRes.data._id;
@@ -52,6 +47,7 @@ export default function CommentsCreator({ tweetID, fetchTweet }) {
                     type="text"
                     rows={4}
                     maxLength="250"
+                    required
                     className="commentscreator__textarea"
                 />
                 <span className="commentscreator__span">

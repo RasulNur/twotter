@@ -1,30 +1,27 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Header.css";
 import HeaderLink from "./HeaderLink";
-
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+
 import { useGetUserId } from "../../hooks/useGetUserId";
-import { useEffect } from "react";
-import DropdownMenu from "../DropdownMenu/DropdownMenu";
 
-function Header({ currUsername, fetchCurrentUser }) {
+import ReactSelect from "../ReactSelect/ReactSelect";
+
+function Header({ currUsername }) {
     const [_, setCookies] = useCookies(["access_token"]);
-    const userID = useGetUserId();
     const navigate = useNavigate();
+    const userID = useGetUserId();
 
-    const handleSelectChange = (e) => {
-        console.log(e.target.value);
-        if (e.target.value === "logout") {
+    const handleSelectChange = (selected) => {
+        if (selected.value === "logout") {
             setCookies("access_token", "");
             window.localStorage.removeItem("userID");
-        } else if (e.target.value === "edit") {
+            navigate("/");
+        } else if (selected.value === "profile") {
             navigate("/profile");
         }
     };
-
-    useEffect(() => {
-        fetchCurrentUser();
-    }, [userID]);
 
     return (
         <header className="header">
@@ -39,34 +36,12 @@ function Header({ currUsername, fetchCurrentUser }) {
                                 <HeaderLink url={"login"} text={"Login"} />
                             </li>
                         ) : (
-                            <>
-                                <li className="header__list-item">
-                                    <select
-                                        className="header__select"
-                                        name="cars"
-                                        id="cars"
-                                        onChange={handleSelectChange}
-                                        defaultValue="username">
-                                        <option
-                                            className="header__option"
-                                            value="username"
-                                            hidden>
-                                            {currUsername}
-                                        </option>
-                                        <option
-                                            value="edit"
-                                            className="header__option">
-                                            Edit profile
-                                        </option>
-                                        <option
-                                            value="logout"
-                                            className="header__option">
-                                            Logout
-                                        </option>
-                                    </select>
-                                    <DropdownMenu />
-                                </li>
-                            </>
+                            <li className="header__list-item">
+                                <ReactSelect
+                                    currUsername={currUsername}
+                                    handleSelectChange={handleSelectChange}
+                                />
+                            </li>
                         )}
                     </ul>
                 </nav>

@@ -8,6 +8,7 @@ import TweetPage from "./pages/TweetPage/TweetPage";
 import Registration from "./pages/Registration/Registration";
 import Login from "./pages/Login/Login";
 
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -16,8 +17,9 @@ import { useGetUserId } from "./hooks/useGetUserId";
 function App() {
     const userID = useGetUserId();
     const [currUsername, setCurrUsername] = useState("");
-    const fetchCurrentUser = async () => {
-        const currUser = await axios.get(`auth/users/${userID}`);
+
+    const fetchCurrentUser = async (resUserID = userID) => {
+        const currUser = await axios.get(`auth/users/${resUserID}`);
 
         setCurrUsername(currUser.data.username);
     };
@@ -29,10 +31,8 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <div className="app__wrapper">
-                    <Header
-                        currUsername={currUsername}
-                        fetchCurrentUser={fetchCurrentUser}
-                    />
+                    <Toaster />
+                    <Header currUsername={currUsername} />
                     <div className="content-wrapper">
                         <Routes>
                             <Route index element={<Home />} />
@@ -49,8 +49,22 @@ function App() {
                                 path="post/:id/:username"
                                 element={<TweetPage />}
                             />
-                            <Route path="register" element={<Registration />} />
-                            <Route path="login" element={<Login />} />
+                            <Route
+                                path="register"
+                                element={
+                                    <Registration
+                                        fetchCurrentUser={fetchCurrentUser}
+                                    />
+                                }
+                            />
+                            <Route
+                                path="login"
+                                element={
+                                    <Login
+                                        fetchCurrentUser={fetchCurrentUser}
+                                    />
+                                }
+                            />
                         </Routes>
                     </div>
                     <Footer />

@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useGetUserId } from "../../hooks/useGetUserId";
+import toast from "react-hot-toast";
 
 export default function Post() {
     const userID = useGetUserId();
@@ -16,8 +17,6 @@ export default function Post() {
     const tweetID = id;
     const [tweet, setTweet] = useState();
     const comments = tweet?.comments;
-    // console.log(tweet?.comments);
-    console.log(comments);
 
     const fetchTweet = async () => {
         try {
@@ -32,9 +31,16 @@ export default function Post() {
         fetchTweet();
     }, []);
 
+    const notify = (msg) =>
+        toast.error(msg, {
+            duration: 2000,
+            position: "top-right",
+            style: { background: "#e1e5e7" },
+        });
+
     const onLikeClick = async () => {
         if (!userID) {
-            alert("You should register or login to react");
+            notify("You should register or login to react");
             return;
         }
         await axios.put(`tweets/reactions/likes/${tweetID}`, {
@@ -44,7 +50,7 @@ export default function Post() {
     };
     const onDislikeClick = async () => {
         if (!userID) {
-            alert("You should register or login to react");
+            notify("You should register or login to react");
             return;
         }
         await axios.put(`tweets/reactions/dislikes/${tweetID}`, { userID });

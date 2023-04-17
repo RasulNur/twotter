@@ -6,13 +6,21 @@ import "./Comment.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGetUserId } from "../../hooks/useGetUserId";
+import toast from "react-hot-toast";
 
 export default function Comment({ commentID }) {
     const userID = useGetUserId();
+
     const [currentComment, setCurrentComment] = useState({
         comment: [],
         username: "",
     });
+    const notify = (msg) =>
+        toast.error(msg, {
+            duration: 2000,
+            position: "top-right",
+            style: { background: "#e1e5e7" },
+        });
     const fetchComment = async () => {
         const resComment = await axios.get(`comments/${commentID}`);
         const resUser = await axios.get(
@@ -24,13 +32,14 @@ export default function Comment({ commentID }) {
             username: resUser.data.username,
         });
     };
+
     useEffect(() => {
         fetchComment();
     }, []);
 
     const onLikeClick = async () => {
         if (!userID) {
-            alert("You should register or login to react");
+            notify("You should register or login to react");
             return;
         }
         await axios.put(`comments/reactions/likes/${commentID}`, { userID });
@@ -38,7 +47,7 @@ export default function Comment({ commentID }) {
     };
     const onDislikeClick = async () => {
         if (!userID) {
-            alert("You should register or login to react");
+            notify("You should register or login to react");
             return;
         }
         await axios.put(`comments/reactions/dislikes/${commentID}`, { userID });

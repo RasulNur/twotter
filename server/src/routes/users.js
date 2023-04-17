@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import { UserModel } from "../models/Users.js";
 
 const router = express.Router();
-const tokenSecret = process.env.TOKEN_SECRET;
+// const tokenSecret = process.env.TOKEN_SECRET;
 
 router.get("/users/:userID", async (req, res) => {
     try {
@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
     });
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id }, tokenSecret);
+    const token = jwt.sign({ id: newUser._id }, process.env.TOKEN_SECRET);
     res.json({ token, userID: newUser._id });
 });
 
@@ -58,14 +58,42 @@ router.post("/login", async (req, res) => {
         return res.json({ message: "Password is incorrect!" });
     }
 
-    const token = jwt.sign({ id: user._id }, tokenSecret);
+    const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET);
+    console.log(token);
     res.json({ token, userID: user._id });
 });
 
+router.post("/changeuser/:id", async (req, res) => {
+    const { username, currPassword, newPassword } = req.body;
+    const { id } = req.params;
+    try {
+        const currUser = await UserModel.findById(id);
+
+        const isPasswordValid = await bcrypt.compare(
+            currPassword,
+            currUser.password
+        );
+
+        if (!isPasswordValid) {
+            return res.json({ message: "Current password is incorrect!" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const user = await UserModel.findByIdAndUpdate(id, {
+            username,
+            password: hashedPassword,
+        });
+        res.json({ user });
+    } catch (e) {
+        res.json(e);
+    }
+});
+
 router.put("/changeusername/:id", async (req, res) => {
+    const { username } = req.body;
     try {
         const user = await UserModel.findByIdAndUpdate(req.params.id, {
-            username: req.body.username,
+            username,
         });
 
         res.json({ user });

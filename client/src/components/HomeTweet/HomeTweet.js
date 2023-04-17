@@ -10,8 +10,15 @@ import axios from "axios";
 import { useGetUserId } from "../../hooks/useGetUserId";
 import { useDispatch } from "react-redux";
 import { fetchTweetsThunk } from "../../store/tweets/tweetsThunk";
+import toast from "react-hot-toast";
 
-export default function HomeTweet({ tweet, tweetText, tweetUserID, tweetID }) {
+export default function HomeTweet({
+    tweet,
+    tweetText,
+    tweetUserID,
+    tweetID,
+    limit,
+}) {
     const userID = useGetUserId();
     const [tweetAuthor, setTweetAuthor] = useState("");
     const dispatch = useDispatch();
@@ -29,21 +36,28 @@ export default function HomeTweet({ tweet, tweetText, tweetUserID, tweetID }) {
         fetchHomeTweetUsername();
     }, []);
 
+    const notify = (msg) =>
+        toast.error(msg, {
+            duration: 2000,
+            position: "top-right",
+            style: { background: "#e1e5e7" },
+        });
+
     const onLikeClick = async () => {
         if (!userID) {
-            alert("You should register or login to react");
+            notify("You should register or login to react");
             return;
         }
         await axios.put(`tweets/reactions/likes/${tweetID}`, { userID });
-        dispatch(fetchTweetsThunk());
+        dispatch(fetchTweetsThunk(limit));
     };
     const onDislikeClick = async () => {
         if (!userID) {
-            alert("You should register or login to react");
+            notify("You should register or login to react");
             return;
         }
         await axios.put(`tweets/reactions/dislikes/${tweetID}`, { userID });
-        dispatch(fetchTweetsThunk());
+        dispatch(fetchTweetsThunk(limit));
     };
 
     return (

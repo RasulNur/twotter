@@ -28,6 +28,9 @@ export default function RegisterOrLogin({
                                     setUsername(e.target.value);
                                 }}
                                 autoComplete="on"
+                                required
+                                minLength="3"
+                                maxLength="16"
                             />
                         </label>
                         <label className="registration__label">
@@ -40,6 +43,9 @@ export default function RegisterOrLogin({
                                     setPassword(e.target.value);
                                 }}
                                 autoComplete="on"
+                                required
+                                minLength="3"
+                                maxLength="16"
                             />
                         </label>
 

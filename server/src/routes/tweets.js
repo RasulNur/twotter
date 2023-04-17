@@ -4,9 +4,11 @@ import { TweetModel } from "../models/Tweets.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/limit=:limit", async (req, res) => {
     try {
-        const response = await TweetModel.find({});
+        const response = await TweetModel.find({})
+            .sort({ _id: -1 })
+            .limit(req.params.limit);
 
         res.json(response);
     } catch (e) {
