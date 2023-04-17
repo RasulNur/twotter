@@ -6,7 +6,6 @@ import bcrypt from "bcrypt";
 import { UserModel } from "../models/Users.js";
 
 const router = express.Router();
-// const tokenSecret = process.env.TOKEN_SECRET;
 
 router.get("/users/:userID", async (req, res) => {
     try {
@@ -26,7 +25,9 @@ router.post("/register", async (req, res) => {
     });
 
     if (user) {
-        return res.json({ message: "User already registered!" });
+        return res
+            .sendStatus(400)
+            .json({ message: "User already registered!" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -49,13 +50,15 @@ router.post("/login", async (req, res) => {
     });
 
     if (!user) {
-        return res.json({ message: "User doesn't registered!" });
+        return res
+            .sendStatus(401)
+            .json({ message: "User doesn't registered!" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-        return res.json({ message: "Password is incorrect!" });
+        return res.sendStatus(400).json({ message: "Password is incorrect!" });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET);
@@ -75,7 +78,9 @@ router.post("/changeuser/:id", async (req, res) => {
         );
 
         if (!isPasswordValid) {
-            return res.json({ message: "Current password is incorrect!" });
+            return res
+                .sendStatus(400)
+                .json({ message: "Current password is incorrect!" });
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -113,7 +118,9 @@ router.post("/changepassword/:id", async (req, res) => {
         );
 
         if (!isPasswordValid) {
-            return res.json({ message: "Password is incorrect!" });
+            return res
+                .sendStatus(400)
+                .json({ message: "Password is incorrect!" });
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
