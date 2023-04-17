@@ -21,7 +21,6 @@ export default function Home() {
                 document.body.offsetHeight
             ) {
                 setLimit(limit + 10);
-                dispatch(fetchTweetsThunk(limit));
             }
         };
     };
@@ -30,7 +29,6 @@ export default function Home() {
         dispatch(fetchTweetsThunk(limit));
         detectScrollBottom();
     }, [window.pageYOffset]);
-    detectScrollBottom();
 
     return (
         <div className="home">

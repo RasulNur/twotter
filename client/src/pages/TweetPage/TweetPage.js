@@ -11,12 +11,13 @@ import { useEffect, useState } from "react";
 import { useGetUserId } from "../../hooks/useGetUserId";
 import toast from "react-hot-toast";
 
-export default function Post() {
+export default function TweetPage() {
     const userID = useGetUserId();
     const { id, username } = useParams();
-    const tweetID = id;
+    let tweetID = id;
     const [tweet, setTweet] = useState();
-    const comments = tweet?.comments;
+    const [comments, setComments] = useState();
+    const [commentsLimit, setCommentsLimit] = useState(4);
 
     const fetchTweet = async () => {
         try {
@@ -27,9 +28,17 @@ export default function Post() {
             console.error(e);
         }
     };
-    useEffect(() => {
-        fetchTweet();
-    }, []);
+    const fetchTweetComments = async (commentsLimit) => {
+        try {
+            const res = await axios.get(
+                `tweets/${tweetID}/comments&commentsLimit=${commentsLimit}`
+            );
+
+            setComments(res.data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const notify = (msg) =>
         toast.error(msg, {
@@ -56,6 +65,26 @@ export default function Post() {
         await axios.put(`tweets/reactions/dislikes/${tweetID}`, { userID });
         fetchTweet();
     };
+    useEffect(() => {
+        fetchTweet();
+        window.scrollTo(0, 0);
+    }, []);
+
+    const detectScrollBottom = () => {
+        window.onscroll = function () {
+            if (
+                window.innerHeight + Math.ceil(window.pageYOffset) >=
+                document.body.offsetHeight
+            ) {
+                setCommentsLimit(commentsLimit + 4);
+            }
+        };
+    };
+
+    useEffect(() => {
+        fetchTweetComments(commentsLimit);
+        detectScrollBottom();
+    }, [window.pageYOffset, window.innerHeight]);
 
     return (
         <div className="post">
@@ -106,22 +135,22 @@ export default function Post() {
                         <div className="post__comments-creator">
                             <CommentsCreator
                                 tweetID={tweetID}
-                                fetchTweet={fetchTweet}
+                                fetchTweetComments={fetchTweetComments}
+                                commentsLimit={commentsLimit}
                             />
                         </div>
                     ) : null}
 
                     <div className="post__comments-wrapper">
-                        {comments && comments.length > 0 ? (
-                            comments &&
-                            [...comments]
-                                .reverse()
-                                .map((comment) => (
-                                    <Comment
-                                        key={comment}
-                                        commentID={comment}
-                                    />
-                                ))
+                        {comments ? (
+                            comments?.map((comment) => (
+                                <Comment
+                                    key={comment._id}
+                                    comment={comment}
+                                    fetchTweetComments={fetchTweetComments}
+                                    commentsLimit={commentsLimit}
+                                />
+                            ))
                         ) : (
                             <h3>No comments</h3>
                         )}

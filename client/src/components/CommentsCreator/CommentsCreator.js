@@ -3,7 +3,12 @@ import { useGetUserId } from "../../hooks/useGetUserId";
 import "./CommentsCreator.css";
 import axios from "axios";
 
-export default function CommentsCreator({ tweetID, fetchTweet }) {
+export default function CommentsCreator({
+    tweetID,
+
+    fetchTweetComments,
+    commentsLimit,
+}) {
     const userID = useGetUserId();
     const [lettersCount, setLettersCount] = useState(0);
     const [comment, setComment] = useState({
@@ -29,7 +34,7 @@ export default function CommentsCreator({ tweetID, fetchTweet }) {
                 tweetID,
                 commentID,
             });
-            fetchTweet();
+            fetchTweetComments(commentsLimit);
             setComment({ ...comment, text: "" });
         } catch (e) {
             console.error(e);

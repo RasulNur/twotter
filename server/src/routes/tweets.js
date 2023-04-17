@@ -1,6 +1,7 @@
 import express from "express";
 
 import { TweetModel } from "../models/Tweets.js";
+import { CommentModel } from "../models/Comments.js";
 
 const router = express.Router();
 
@@ -25,6 +26,23 @@ router.get("/:tweetID", async (req, res) => {
         res.json(e);
     }
 });
+
+router.get(
+    "/:tweetID/comments&commentsLimit=:commentsLimit",
+    async (req, res) => {
+        try {
+            const response = await CommentModel.find({
+                tweetID: req.params.tweetID,
+            })
+                .sort({ _id: -1 })
+                .limit(req.params.commentsLimit);
+
+            res.json(response);
+        } catch (e) {
+            res.json(e);
+        }
+    }
+);
 
 router.post("/", async (req, res) => {
     const tweet = new TweetModel(req.body);

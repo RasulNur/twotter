@@ -8,33 +8,29 @@ import axios from "axios";
 import { useGetUserId } from "../../hooks/useGetUserId";
 import toast from "react-hot-toast";
 
-export default function Comment({ commentID }) {
+export default function Comment({
+    comment,
+    fetchTweetComments,
+    commentsLimit,
+}) {
     const userID = useGetUserId();
+    const [username, setUsername] = useState();
 
-    const [currentComment, setCurrentComment] = useState({
-        comment: [],
-        username: "",
-    });
     const notify = (msg) =>
         toast.error(msg, {
             duration: 2000,
             position: "top-right",
             style: { background: "#e1e5e7" },
         });
-    const fetchComment = async () => {
-        const resComment = await axios.get(`comments/${commentID}`);
-        const resUser = await axios.get(
-            `auth/users/${resComment.data.userOwner}`
-        );
+    const fetchCommentUsername = async () => {
+        const resUser = await axios.get(`auth/users/${comment?.userOwner}`);
 
-        setCurrentComment({
-            comment: resComment.data,
-            username: resUser.data.username,
-        });
+        setUsername(resUser.data.username);
     };
 
     useEffect(() => {
-        fetchComment();
+        fetchCommentUsername();
+        // fetchTweetComments(commentsLimit);
     }, []);
 
     const onLikeClick = async () => {
@@ -42,24 +38,24 @@ export default function Comment({ commentID }) {
             notify("You should register or login to react");
             return;
         }
-        await axios.put(`comments/reactions/likes/${commentID}`, { userID });
-        fetchComment();
+        await axios.put(`comments/reactions/likes/${comment?._id}`, { userID });
+        fetchTweetComments(commentsLimit);
     };
     const onDislikeClick = async () => {
         if (!userID) {
             notify("You should register or login to react");
             return;
         }
-        await axios.put(`comments/reactions/dislikes/${commentID}`, { userID });
-        fetchComment();
+        await axios.put(`comments/reactions/dislikes/${comment?._id}`, {
+            userID,
+        });
+        fetchTweetComments(commentsLimit);
     };
 
     return (
         <div className="comment">
-            <div className="comment__author">{currentComment.username}</div>
-            <div className="comment__text">
-                {currentComment.comment && currentComment.comment.text}
-            </div>
+            <div className="comment__author">{username}</div>
+            <div className="comment__text">{comment?.text}</div>
             <div className="comment__reaction">
                 <div className="comment__reaction-btns">
                     <button
@@ -68,8 +64,7 @@ export default function Comment({ commentID }) {
                         onClick={onLikeClick}>
                         <img
                             src={
-                                currentComment.comment.likes &&
-                                currentComment.comment.likes.includes(userID)
+                                comment?.likes.includes(userID)
                                     ? ThumbUpFillIcon
                                     : ThumbUpIcon
                             }
@@ -77,8 +72,7 @@ export default function Comment({ commentID }) {
                             className="comment__icon"
                         />
 
-                        {currentComment.comment.likes &&
-                            currentComment.comment.likes.length}
+                        {comment?.likes.length}
                     </button>
                     <button
                         type="button"
@@ -86,16 +80,14 @@ export default function Comment({ commentID }) {
                         onClick={onDislikeClick}>
                         <img
                             src={
-                                currentComment.comment.dislikes &&
-                                currentComment.comment.dislikes.includes(userID)
+                                comment?.dislikes.includes(userID)
                                     ? ThumbDownFillIcon
                                     : ThumbDownIcon
                             }
                             alt="Thumb down"
                             className="comment__icon"
                         />
-                        {currentComment.comment.dislikes &&
-                            currentComment.comment.dislikes.length}
+                        {comment?.dislikes.length}
                     </button>
                 </div>
             </div>
