@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./RegisterOrLogin.css";
+import "./AuthForm.css";
 
 export default function RegisterOrLogin({
     heading,

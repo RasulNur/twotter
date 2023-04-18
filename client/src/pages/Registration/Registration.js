@@ -1,5 +1,5 @@
 import { useState } from "react";
-import RegisterOrLogin from "../../components/RegisterOrLogin/RegisterOrLogin";
+import AuthForm from "../../components/AuthForm/AuthForm";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +51,7 @@ export default function Registration({ fetchCurrentUser }) {
 
     return (
         <>
-            <RegisterOrLogin
+            <AuthForm
                 heading={"Registration"}
                 btn={"Register"}
                 text={"Already registered?"}

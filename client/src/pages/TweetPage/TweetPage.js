@@ -142,7 +142,7 @@ export default function TweetPage() {
                     ) : null}
 
                     <div className="post__comments-wrapper">
-                        {comments ? (
+                        {comments?.length > 0 ? (
                             comments?.map((comment) => (
                                 <Comment
                                     key={comment._id}

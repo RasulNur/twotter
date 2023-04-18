@@ -22,17 +22,16 @@ export default function HomeTweet({
     const userID = useGetUserId();
     const [tweetAuthor, setTweetAuthor] = useState("");
     const dispatch = useDispatch();
+    const fetchHomeTweetUsername = async () => {
+        try {
+            const user = await axios.get(`auth/users/${tweetUserID}`);
+            setTweetAuthor(user.data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     useEffect(() => {
-        const fetchHomeTweetUsername = async () => {
-            try {
-                const user = await axios.get(`auth/users/${tweetUserID}`);
-                setTweetAuthor(user.data);
-            } catch (e) {
-                console.error(e);
-            }
-        };
-
         fetchHomeTweetUsername();
     }, []);
 
@@ -48,7 +47,10 @@ export default function HomeTweet({
             notify("You should register or login to react");
             return;
         }
-        await axios.put(`tweets/reactions/likes/${tweetID}`, { userID });
+        await axios.put(`tweets/reactions/likes/${tweetID}`, {
+            userID,
+        });
+
         dispatch(fetchTweetsThunk(limit));
     };
     const onDislikeClick = async () => {
@@ -57,6 +59,7 @@ export default function HomeTweet({
             return;
         }
         await axios.put(`tweets/reactions/dislikes/${tweetID}`, { userID });
+
         dispatch(fetchTweetsThunk(limit));
     };
 

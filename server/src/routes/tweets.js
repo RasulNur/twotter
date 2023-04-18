@@ -65,12 +65,12 @@ router.put("/reactions/likes/:tweetID", async (req, res) => {
             tweet.likes.push(userID);
             tweet.dislikes.pull(userID);
             await tweet.save();
-            return res.json({ tweet, message: "Like is added" });
+            return res.json({ tweet, message: "Added" });
         }
 
         tweet.likes.pull(userID);
         await tweet.save();
-        res.json({ tweet, message: "Like is deleted" });
+        res.json({ tweet, message: "Deleted" });
     } catch (e) {
         res.json(e);
     }
@@ -86,12 +86,12 @@ router.put("/reactions/dislikes/:tweetID", async (req, res) => {
             tweet.dislikes.push(userID);
             tweet.likes.pull(userID);
             await tweet.save();
-            return res.json({ tweet, message: "Dislike is added" });
+            return res.json({ tweet, like: "Added" });
         }
 
         tweet.dislikes.pull(userID);
         await tweet.save();
-        res.json({ tweet, message: "Dislike is deleted" });
+        res.json({ tweet, message: "Deleted" });
     } catch (e) {
         res.json(e);
     }

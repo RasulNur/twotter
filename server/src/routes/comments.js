@@ -50,12 +50,12 @@ router.put("/reactions/likes/:commentID", async (req, res) => {
             comment.likes.push(userID);
             comment.dislikes.pull(userID);
             await comment.save();
-            return res.json({ comment, message: "Like is added" });
+            return res.json({ comment, message: "Added" });
         }
 
         comment.likes.pull(userID);
         await comment.save();
-        res.json({ comment, message: "Like is deleted" });
+        res.json({ comment, message: "Deleted" });
     } catch (e) {
         res.json(e);
     }
@@ -72,12 +72,12 @@ router.put("/reactions/dislikes/:commentID", async (req, res) => {
             comment.dislikes.push(userID);
             comment.likes.pull(userID);
             await comment.save();
-            return res.json({ comment, message: "Dislike is added" });
+            return res.json({ comment, message: "Added" });
         }
 
         comment.dislikes.pull(userID);
         await comment.save();
-        res.json({ comment, message: "Dislike is deleted" });
+        res.json({ comment, message: "Deleted" });
     } catch (e) {
         res.json(e);
     }

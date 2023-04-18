@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import RegisterOrLogin from "../../components/RegisterOrLogin/RegisterOrLogin";
+import AuthForm from "../../components/AuthForm/AuthForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -43,7 +43,7 @@ export default function Login({ fetchCurrentUser }) {
 
     return (
         <>
-            <RegisterOrLogin
+            <AuthForm
                 heading={"Login"}
                 btn={"Login"}
                 text={"Not yet registered?"}
