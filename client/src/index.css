@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
 
-/* Styles reset */
 * {
     box-sizing: border-box;
 }
@@ -139,18 +138,4 @@ a {
     text-decoration: none;
     color: inherit;
     display: inline-block;
-}
-
-.header-container {
-    max-width: 1370px;
-    margin: 0 auto;
-    padding: 0 15px;
-    box-sizing: content-box;
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 15px;
-    box-sizing: content-box;
 }

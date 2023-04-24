@@ -15,25 +15,15 @@ router.get("/:commentID", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    const comment = new CommentModel(req.body);
+    const comment = new CommentModel(req.body.comment);
     try {
         const response = await comment.save();
-
-        res.json(response);
-    } catch (e) {
-        res.json(e);
-    }
-});
-
-router.put("/", async (req, res) => {
-    try {
         const tweet = await TweetModel.findById(req.body.tweetID);
-        const comment = await CommentModel.findById(req.body.commentID);
 
-        tweet.comments.push(comment);
+        tweet.comments.push(response);
         await tweet.save();
 
-        res.json({ comments: tweet.comments });
+        res.sendStatus(200);
     } catch (e) {
         res.json(e);
     }

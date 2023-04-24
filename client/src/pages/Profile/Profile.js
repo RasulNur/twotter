@@ -4,6 +4,7 @@ import { useGetUserId } from "../../hooks/useGetUserId";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ChangePswInput from "../../components/ChangePswInput/ChangePswInput";
+import { Navigate } from "react-router-dom";
 
 export default function Profile({ currUsername, fetchCurrentUser }) {
     const userID = useGetUserId();
@@ -113,7 +114,7 @@ export default function Profile({ currUsername, fetchCurrentUser }) {
                     return;
                 }
 
-                const res = await axios.post(`auth/changepassword/${id}`, {
+                await axios.post(`auth/changepassword/${id}`, {
                     currPassword,
                     newPassword,
                 });
@@ -130,7 +131,9 @@ export default function Profile({ currUsername, fetchCurrentUser }) {
             console.log(e);
         }
     };
-
+    if (!userID) {
+        return <Navigate replace to={"/"} />;
+    }
     return (
         <section className="profile">
             <div className="container">

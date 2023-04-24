@@ -1,3 +1,17 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: content-box;
+}
+
+.header-container {
+    max-width: 1370px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: content-box;
+}
+
 .app__wrapper {
     min-height: 100vh;
     display: flex;
@@ -5,6 +19,17 @@
     justify-content: space-between;
 }
 
-.content-wrapper {
-    padding-top: 87px;
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 120px 0 0;
+}
+
+.back-btn {
+    color: #ffffff;
+    background-color: #1d9bf0;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
 }

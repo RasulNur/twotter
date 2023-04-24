@@ -30,7 +30,6 @@ export default function Comment({
 
     useEffect(() => {
         fetchCommentUsername();
-        // fetchTweetComments(commentsLimit);
     }, []);
 
     const onLikeClick = async () => {

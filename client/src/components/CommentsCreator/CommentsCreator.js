@@ -5,7 +5,6 @@ import axios from "axios";
 
 export default function CommentsCreator({
     tweetID,
-
     fetchTweetComments,
     commentsLimit,
 }) {
@@ -27,13 +26,9 @@ export default function CommentsCreator({
         e.preventDefault();
 
         try {
-            const commentRes = await axios.post("comments", comment);
             const tweetID = comment.tweetID;
-            const commentID = commentRes.data._id;
-            await axios.put("comments", {
-                tweetID,
-                commentID,
-            });
+
+            await axios.post("comments", { comment, tweetID });
             fetchTweetComments(commentsLimit);
             setComment({ ...comment, text: "" });
         } catch (e) {
