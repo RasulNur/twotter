@@ -32,9 +32,13 @@
 
 ## `Server side`
 
+<p>Используются такие библиотеки как express, mongoose(Mongodb), bcrypt, cors, dotenv, jsonwebtoken </p>
+
+<p>Перед запуском нужно создать файл .env и скопировать в него переменные из файла .env.example</p>
+
 ### `npm run start`
 
-Запускает приложение в режиме разработки на [http://localhost:3000](http://localhost:3000)
+Запускает приложение в режиме разработки на [http://localhost:3001](http://localhost:3001)
 
 ### `npm install`
 
@@ -47,6 +51,10 @@
 <hr>
 
 ## `Client side`
+
+<p>Используются такие библиотеки как react, react-dom, react-router-dom, react-hot-toast, @reduxjs/toolkit, react-select, axios </p>
+
+<p>Перед запуском нужно создать файл .env и скопировать в него переменные из файла .env.example</p>
 
 ### `npm start`
 
