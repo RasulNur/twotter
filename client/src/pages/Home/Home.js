@@ -47,6 +47,7 @@ export default function Home() {
                                 tweet={tweet}
                                 tweetID={tweet._id}
                                 tweetText={tweet.text}
+                                tweetImg={tweet.image}
                                 tweetUserID={tweet.userOwner}
                                 limit={limit}
                             />

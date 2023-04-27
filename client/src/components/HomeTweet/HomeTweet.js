@@ -18,6 +18,7 @@ export default function HomeTweet({
     tweetUserID,
     tweetID,
     limit,
+    tweetImg,
 }) {
     const userID = useGetUserId();
     const [tweetAuthor, setTweetAuthor] = useState("");
@@ -74,6 +75,21 @@ export default function HomeTweet({
                     {tweetAuthor && tweetAuthor.username}
                 </Link>
             </div>
+
+            {tweetImg ? (
+                <Link
+                    className="home__post-author-link"
+                    to={`post/${tweetID}/${
+                        tweetAuthor && tweetAuthor.username
+                    }`}>
+                    <img
+                        className="home__post-img"
+                        src={tweetImg}
+                        alt="Tweet img"
+                    />
+                </Link>
+            ) : null}
+
             <div className="home__post-text">
                 <Link
                     className="home__post-text-link"

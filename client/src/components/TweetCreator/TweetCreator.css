@@ -15,6 +15,28 @@
     resize: none;
 }
 
+.postcreator__upload-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.postcreator__label-upload img {
+    width: 30px;
+    height: 30px;
+}
+
+.postcreator__file-upload {
+    display: none;
+}
+
+.postcreator__label-upload {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+}
+
 .postcreator__span {
     font-size: 12px;
 }

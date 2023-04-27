@@ -17,6 +17,11 @@
     line-height: 150%;
 }
 
+.home__post-img {
+    width: 100%;
+    max-width: 758px;
+}
+
 .home__post-bottom {
     display: flex;
     justify-content: space-between;

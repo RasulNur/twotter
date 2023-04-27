@@ -91,6 +91,11 @@ export default function TweetPage() {
             <div className="container">
                 <div className="post__content">
                     <div className="post__author">{username}</div>
+                    <img
+                        className="post__image"
+                        src={tweet && tweet.image}
+                        alt="Tweet img"
+                    />
                     <div className="post__text">{tweet && tweet.text}</div>
 
                     <div className="post__reaction">
