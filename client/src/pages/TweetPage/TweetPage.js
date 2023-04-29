@@ -10,20 +10,22 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useGetUserId } from "../../hooks/useGetUserId";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTweetThunk } from "../../store/tweets/tweetsThunk";
 
 export default function TweetPage() {
     const userID = useGetUserId();
     const { id, username } = useParams();
+    const dispatch = useDispatch();
+    const tweetsSlice = useSelector((state) => state.tweets);
     let tweetID = id;
-    const [tweet, setTweet] = useState();
     const [comments, setComments] = useState();
-    const [commentsLimit, setCommentsLimit] = useState(4);
+    const [commentsLimit, setCommentsLimit] = useState(10);
+    const { tweet } = tweetsSlice;
 
-    const fetchTweet = async () => {
+    const fetchTweet = () => {
         try {
-            const res = await axios.get(`tweets/${tweetID}`);
-
-            setTweet(res.data);
+            dispatch(fetchTweetThunk(tweetID));
         } catch (e) {
             console.error(e);
         }
@@ -33,7 +35,6 @@ export default function TweetPage() {
             const res = await axios.get(
                 `tweets/${tweetID}/comments&commentsLimit=${commentsLimit}`
             );
-
             setComments(res.data);
         } catch (e) {
             console.error(e);
@@ -91,11 +92,14 @@ export default function TweetPage() {
             <div className="container">
                 <div className="post__content">
                     <div className="post__author">{username}</div>
-                    <img
-                        className="post__image"
-                        src={tweet && tweet.image}
-                        alt="Tweet img"
-                    />
+                    {tweet && tweet.image ? (
+                        <img
+                            className="post__image"
+                            src={tweet && tweet.image}
+                            alt="Tweet img"
+                        />
+                    ) : null}
+
                     <div className="post__text">{tweet && tweet.text}</div>
 
                     <div className="post__reaction">

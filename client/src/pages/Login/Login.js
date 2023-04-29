@@ -4,12 +4,15 @@ import AuthForm from "../../components/AuthForm/AuthForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-export default function Login({ fetchCurrentUser }) {
+import { fetchCurrUsernameThunk } from "../../store/users/usersThunk";
+import { useDispatch } from "react-redux";
+export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const [_, setCookies] = useCookies(["access_token"]);
+    const [cookies, setCookies] = useCookies(["access_token"]);
     const notify = (msg) =>
         toast.error(msg, {
             duration: 2000,
@@ -34,7 +37,8 @@ export default function Login({ fetchCurrentUser }) {
             setCookies("access_token", res.data.token);
 
             window.localStorage.setItem("userID", res.data.userID);
-            fetchCurrentUser(res.data.userID);
+
+            dispatch(fetchCurrUsernameThunk(res.data.userID));
             navigate("/");
         } catch (e) {
             console.error(e);

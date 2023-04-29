@@ -8,7 +8,7 @@ import { useGetUserId } from "../../hooks/useGetUserId";
 
 import ReactSelect from "../ReactSelect/ReactSelect";
 
-function Header({ currUsername }) {
+function Header() {
     const [_, setCookies] = useCookies(["access_token"]);
     const navigate = useNavigate();
     const userID = useGetUserId();
@@ -17,7 +17,7 @@ function Header({ currUsername }) {
         if (selected.value === "logout") {
             setCookies("access_token", "");
             window.localStorage.removeItem("userID");
-            navigate("/");
+            navigate("/login");
         } else if (selected.value === "profile") {
             navigate("/profile");
         }
@@ -27,7 +27,12 @@ function Header({ currUsername }) {
         <header className="header">
             <div className="header-container">
                 <nav className="header__nav">
-                    <Link to="/" className="header__icon">
+                    <Link
+                        to="/"
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                        }}
+                        className="header__icon">
                         Twotter
                     </Link>
                     <ul className="header__list">
@@ -38,7 +43,6 @@ function Header({ currUsername }) {
                         ) : (
                             <li className="header__list-item">
                                 <ReactSelect
-                                    currUsername={currUsername}
                                     handleSelectChange={handleSelectChange}
                                 />
                             </li>

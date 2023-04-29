@@ -1,12 +1,12 @@
 import "./TweetCreator.css";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useGetUserId } from "../../hooks/useGetUserId";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchTweetsThunk } from "../../store/tweets/tweetsThunk";
 import ImageIcon from "../../icons/image_upload.svg";
 
-export default function TweetCreator({ limit }) {
+export default function TweetCreator() {
     const userID = useGetUserId();
     const dispatch = useDispatch();
     const [uploadFile, setUploadFile] = useState("");
@@ -16,6 +16,7 @@ export default function TweetCreator({ limit }) {
         image: "",
         userOwner: userID,
     });
+    const tweetsSlice = useSelector((state) => state.tweets);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,13 +36,12 @@ export default function TweetCreator({ limit }) {
         e.preventDefault();
 
         try {
-            const res = await axios.post("tweets", tweet);
+            await axios.post("tweets", tweet);
 
-            dispatch(fetchTweetsThunk(limit));
+            dispatch(fetchTweetsThunk(tweetsSlice.limit));
             setTweet({ ...tweet, text: "", image: "" });
             setLettersCount(0);
             setUploadFile("");
-            console.log(res);
         } catch (e) {
             console.error(e);
         }

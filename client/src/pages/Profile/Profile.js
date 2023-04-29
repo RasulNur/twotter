@@ -5,9 +5,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import ChangePswInput from "../../components/ChangePswInput/ChangePswInput";
 import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrUsernameThunk } from "../../store/users/usersThunk";
 
-export default function Profile({ currUsername, fetchCurrentUser }) {
+export default function Profile() {
     const userID = useGetUserId();
+    const usersSlice = useSelector((state) => state.users);
+    const dispatch = useDispatch();
 
     const [newUser, setNewUser] = useState({
         newUsername: "",
@@ -51,7 +55,7 @@ export default function Profile({ currUsername, fetchCurrentUser }) {
                     );
                     return;
                 }
-                if (newUsername === currUsername) {
+                if (newUsername === usersSlice.currUsername) {
                     notifyError("You already have that username!");
                     setNewUser({ ...newUser, newUsername: "" });
                     return;
@@ -78,13 +82,13 @@ export default function Profile({ currUsername, fetchCurrentUser }) {
                     newPassword: "",
                     confirmPassword: "",
                 });
-                fetchCurrentUser();
+                dispatch(fetchCurrUsernameThunk(userID));
                 notifySuccess("The user has been changed successfully!");
             } else if (
                 newUsername &&
                 !(currPassword && newPassword && confirmPassword)
             ) {
-                if (currUsername === newUsername) {
+                if (usersSlice.currUsername === newUsername) {
                     notifyError("You already have that username!");
                     setNewUser({ ...newUser, newUsername: "" });
                     return;
@@ -99,7 +103,7 @@ export default function Profile({ currUsername, fetchCurrentUser }) {
                 }
                 setNewUser({ ...newUser, newUsername: "" });
                 notifySuccess("The username has been changed successfully!");
-                fetchCurrentUser();
+                dispatch(fetchCurrUsernameThunk(userID));
             } else if (
                 !newUsername &&
                 currPassword &&
@@ -128,7 +132,7 @@ export default function Profile({ currUsername, fetchCurrentUser }) {
                 notifySuccess("The password has been changed successfully!");
             }
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     };
     if (!userID) {
@@ -144,7 +148,7 @@ export default function Profile({ currUsername, fetchCurrentUser }) {
                         className="profile__form profile"
                         onSubmit={onSubmitUser}>
                         <h2 className="profile__form-heading">Change user</h2>
-                        <p>Current username: {currUsername}</p>
+                        <p>Current username: {usersSlice.currUsername}</p>
                         <label className="profile__label">
                             New username
                             <input

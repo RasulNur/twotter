@@ -1,6 +1,8 @@
+import { useSelector } from "react-redux";
 import Select from "react-select";
 
-export default function ReactSelect({ currUsername, handleSelectChange }) {
+export default function ReactSelect({ handleSelectChange }) {
+    const usersSlice = useSelector((state) => state.users);
     const options = [
         { value: "profile", label: "Edit profile" },
         { value: "logout", label: "Logout" },
@@ -49,12 +51,12 @@ export default function ReactSelect({ currUsername, handleSelectChange }) {
                 options={options}
                 onChange={handleSelectChange}
                 isSearchable={false}
-                placeholder={currUsername && currUsername}
+                placeholder={usersSlice.currUsername && usersSlice.currUsername}
                 components={{
                     IndicatorSeparator: () => null,
                 }}
                 styles={colourStyles}
-                value={currUsername && currUsername}
+                value={usersSlice.currUsername && usersSlice.currUsername}
             />
         </>
     );

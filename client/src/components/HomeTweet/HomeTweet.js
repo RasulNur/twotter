@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGetUserId } from "../../hooks/useGetUserId";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchTweetsThunk } from "../../store/tweets/tweetsThunk";
 import toast from "react-hot-toast";
 
@@ -17,12 +17,12 @@ export default function HomeTweet({
     tweetText,
     tweetUserID,
     tweetID,
-    limit,
     tweetImg,
 }) {
     const userID = useGetUserId();
     const [tweetAuthor, setTweetAuthor] = useState("");
     const dispatch = useDispatch();
+    const tweetsSlice = useSelector((state) => state.tweets);
     const fetchHomeTweetUsername = async () => {
         try {
             const user = await axios.get(`auth/users/${tweetUserID}`);
@@ -52,7 +52,7 @@ export default function HomeTweet({
             userID,
         });
 
-        dispatch(fetchTweetsThunk(limit));
+        dispatch(fetchTweetsThunk(tweetsSlice.limit));
     };
     const onDislikeClick = async () => {
         if (!userID) {
@@ -61,7 +61,7 @@ export default function HomeTweet({
         }
         await axios.put(`tweets/reactions/dislikes/${tweetID}`, { userID });
 
-        dispatch(fetchTweetsThunk(limit));
+        dispatch(fetchTweetsThunk(tweetsSlice.limit));
     };
 
     return (

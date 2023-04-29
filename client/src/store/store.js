@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import tweetsReducer from "./tweets/tweetsSlice";
-import userReducer from "./users/userSlice";
+import usersReducer from "./users/usersSlice";
 
 export const store = configureStore({
     reducer: {
         tweets: tweetsReducer,
-        user: userReducer,
+        users: usersReducer,
     },
     middleware: (getDefauldMiddleware) =>
         getDefauldMiddleware({ serializableCheck: false }),

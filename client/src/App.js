@@ -1,4 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import Header from "./components/Header/Header";
 import Home from "./pages/Home/Home";
@@ -7,25 +10,18 @@ import Profile from "./pages/Profile/Profile";
 import TweetPage from "./pages/TweetPage/TweetPage";
 import Registration from "./pages/Registration/Registration";
 import Login from "./pages/Login/Login";
-
-import { Toaster } from "react-hot-toast";
-import "./App.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { useGetUserId } from "./hooks/useGetUserId";
 import BackButton from "./components/BackButton/BackButton";
+import { fetchCurrUsernameThunk } from "./store/users/usersThunk";
+
+import "./App.css";
 
 function App() {
     const userID = useGetUserId();
-    const [currUsername, setCurrUsername] = useState("");
+    const dispatch = useDispatch();
 
-    const fetchCurrentUser = async (resUserID = userID) => {
-        const currUser = await axios.get(`auth/users/${resUserID}`);
-
-        setCurrUsername(currUser.data.username);
-    };
     useEffect(() => {
-        fetchCurrentUser();
+        dispatch(fetchCurrUsernameThunk(userID));
     }, []);
 
     return (
@@ -33,7 +29,7 @@ function App() {
             <BrowserRouter>
                 <div className="app__wrapper">
                     <Toaster />
-                    <Header currUsername={currUsername} />
+                    <Header />
                     <BackButton />
                     <Routes>
                         <Route index element={<Home />} />
@@ -44,10 +40,7 @@ function App() {
                                 !userID ? (
                                     <Navigate replace to={"/"} />
                                 ) : (
-                                    <Profile
-                                        currUsername={currUsername}
-                                        fetchCurrentUser={fetchCurrentUser}
-                                    />
+                                    <Profile />
                                 )
                             }
                         />
@@ -55,20 +48,8 @@ function App() {
                             path="post/:id/:username"
                             element={<TweetPage />}
                         />
-                        <Route
-                            path="register"
-                            element={
-                                <Registration
-                                    fetchCurrentUser={fetchCurrentUser}
-                                />
-                            }
-                        />
-                        <Route
-                            path="login"
-                            element={
-                                <Login fetchCurrentUser={fetchCurrentUser} />
-                            }
-                        />
+                        <Route path="register" element={<Registration />} />
+                        <Route path="login" element={<Login />} />
                     </Routes>
                     <Footer />
                 </div>

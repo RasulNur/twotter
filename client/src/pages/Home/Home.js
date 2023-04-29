@@ -1,18 +1,18 @@
 import HomeTweet from "../../components/HomeTweet/HomeTweet";
 import TweetCreator from "../../components/TweetCreator/TweetCreator";
 import "./Home.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchTweetsThunk } from "../../store/tweets/tweetsThunk";
 import { useGetUserId } from "../../hooks/useGetUserId";
+import { increaseLimit } from "../../store/tweets/tweetsSlice";
 
 export default function Home() {
     const userID = useGetUserId();
     const dispatch = useDispatch();
     const tweetsSlice = useSelector((state) => state.tweets);
     const { tweets } = tweetsSlice;
-    const [limit, setLimit] = useState(10);
 
     const detectScrollBottom = () => {
         window.onscroll = function () {
@@ -20,13 +20,13 @@ export default function Home() {
                 window.innerHeight + Math.ceil(window.pageYOffset) >=
                 document.body.offsetHeight
             ) {
-                setLimit(limit + 10);
+                dispatch(increaseLimit(tweetsSlice.limit + 10));
             }
         };
     };
 
     useEffect(() => {
-        dispatch(fetchTweetsThunk(limit));
+        dispatch(fetchTweetsThunk(tweetsSlice.limit));
         detectScrollBottom();
     }, [window.pageYOffset]);
 
@@ -35,7 +35,7 @@ export default function Home() {
             <div className="container">
                 {userID ? (
                     <div className="home__write-post">
-                        <TweetCreator limit={limit} />
+                        <TweetCreator />
                     </div>
                 ) : null}
 
@@ -49,7 +49,6 @@ export default function Home() {
                                 tweetText={tweet.text}
                                 tweetImg={tweet.image}
                                 tweetUserID={tweet.userOwner}
-                                limit={limit}
                             />
                         ))
                     ) : (
