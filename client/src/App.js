@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -19,6 +19,7 @@ import "./App.css";
 function App() {
     const userID = useGetUserId();
     const dispatch = useDispatch();
+    const location = useLocation();
 
     useEffect(() => {
         dispatch(fetchCurrUsernameThunk(userID));
@@ -26,34 +27,29 @@ function App() {
 
     return (
         <div className="App">
-            <BrowserRouter>
-                <div className="app__wrapper">
-                    <Toaster />
-                    <Header />
-                    <BackButton />
-                    <Routes>
-                        <Route index element={<Home />} />
+            <div className="app__wrapper">
+                <Toaster />
+                <Header />
+                {location.pathname === "/" ? null : <BackButton />}
+                <Routes>
+                    <Route index element={<Home />} />
 
-                        <Route
-                            path="profile"
-                            element={
-                                !userID ? (
-                                    <Navigate replace to={"/"} />
-                                ) : (
-                                    <Profile />
-                                )
-                            }
-                        />
-                        <Route
-                            path="post/:id/:username"
-                            element={<TweetPage />}
-                        />
-                        <Route path="register" element={<Registration />} />
-                        <Route path="login" element={<Login />} />
-                    </Routes>
-                    <Footer />
-                </div>
-            </BrowserRouter>
+                    <Route
+                        path="profile"
+                        element={
+                            !userID ? (
+                                <Navigate replace to={"/"} />
+                            ) : (
+                                <Profile />
+                            )
+                        }
+                    />
+                    <Route path="post/:id/:username" element={<TweetPage />} />
+                    <Route path="register" element={<Registration />} />
+                    <Route path="login" element={<Login />} />
+                </Routes>
+                <Footer />
+            </div>
         </div>
     );
 }
