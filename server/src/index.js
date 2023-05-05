@@ -14,7 +14,9 @@ const MONGO_ACCESS = process.env.MONGO_DB_ACCESS;
 
 app.use(express.json());
 
-app.use(cors({ origin: "https://twotter-ck20.onrender.com" }));
+app.use(
+    cors({ credentials: true, origin: "https://twotter-ck20.onrender.com" })
+);
 
 app.use("/api/auth", userRouter);
 app.use("/api/tweets", tweetsRouter);
