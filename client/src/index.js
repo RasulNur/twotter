@@ -6,8 +6,9 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
+import env from "react-dotenv";
 
-axios.defaults.baseURL = process.env.REACT_APP_AXIOS_BASE_URL;
+axios.defaults.baseURL = env.REACT_APP_AXIOS_BASE_URL;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
