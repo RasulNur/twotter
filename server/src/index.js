@@ -9,7 +9,7 @@ import { tweetsRouter } from "./routes/tweets.js";
 import { commentsRouter } from "./routes/comments.js";
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 const MONGO_ACCESS = process.env.MONGO_DB_ACCESS;
 
 app.use(express.json());
@@ -25,10 +25,6 @@ mongoose.connect(MONGO_ACCESS, {
     useUnifiedTopology: true,
 });
 
-if (PORT) {
-    app.listen(PORT, () => {
-        console.log(`Server listening on port ${PORT}`);
-    });
-}
-
-module.exports = app;
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+});
